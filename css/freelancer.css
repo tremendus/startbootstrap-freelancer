@@ -457,3 +457,11 @@ footer .footer-below {
     display: none;
     opacity: 0;
 }
+
+[v-cloak] {
+    display: none;
+}
+
+header {
+    margin-bottom: 30px
+}
