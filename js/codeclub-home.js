@@ -1,25 +1,7 @@
 var fb = new Firebase('https://tremendus-ember-app.firebaseio.com/codeclub')
-
 var data = {
   users: fb.child('users'),
   rooms: fb.child('rooms')
-}
-
-var session = window.session = {
-  user: {}
-}
-
-fb.onAuth(function (user) {
-  console.log('auth():session', session)
-  if (user) {
-    session.user = user
-    save(user)
-  }
-})
-
-function save (user) {
-  console.log('save()', user)
-  data.users.child(user.uid).set(user)
 }
 
 var vue = new Vue({
@@ -27,7 +9,7 @@ var vue = new Vue({
   el: "#app",
   data: function () {
     return {
-      session: window.session,
+      msg: 'hello world',
       user: {
         alias: ''
       },
@@ -49,19 +31,8 @@ var vue = new Vue({
   methods: {
     save: function (model) {
       console.log('model', model)
-      var _model = this.$get(model)
-      _model.addedBy = this.session.user.google.displayName
-      data[model+'s'].push(_model)
+      data[model+'s'].push(this.$get(model))
       this[model] = { alias: null, name: null }
-    },
-    login: function () {
-      fb.authWithOAuthPopup('google', function (user) {
-        console.log('loggedIn', user)
-      }, { scope: 'email' })
-    },
-    logout: function () {
-      fb.unauth()
-      window.session.user = {}
     }
   }
 })
