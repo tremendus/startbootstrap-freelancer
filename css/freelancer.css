@@ -465,3 +465,9 @@ footer .footer-below {
 header {
     margin-bottom: 30px
 }
+
+.circle {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+}
