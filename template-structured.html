@@ -34,7 +34,7 @@
   <script src="js/bootstrap.min.js"></script>
 </head>
 
-<body id="app" class="index" v-cloak>
+<body id="page-top" class="index">
 
   <!-- Navigation -->
   <nav class="navbar navbar-default navbar-fixed-top">
@@ -76,27 +76,17 @@
           <div class="row">
               <div class="col-lg-12">
                   <h1 class="intro-text">
-                      <span v-if='session.user.uid'>welcome to waffle</span>
-                      <span v-else>{{ session.user.google.cachedUserProfile.name }}</span>
+                      welcome to waffle
                   </h1>
-
-                  <div class="row">
-                    <div class="col-sm-12">
-
-                      <img :src='session.user.google.cachedUserProfile.picture' class='circle' v-if='session.user.uid'>
-
-                      <a class="btn btn-lg btn-primary" @click='logout' v-if='session.user.uid'>logout</a>
-                      <a class="btn btn-lg btn-primary" @click='login' v-else>login</a>
-                    </div>
               </div>
           </div>
       </div>
   </header>
 
   <!-- Grid Section -->
-  <div class="container">
-
-      <div class="row" v-if='session.user.uid'>
+  <div id="app" class="container" v-cloak>
+    <!-- <form class="form"> -->
+      <div class="row">
 
         <!-- left column, users  -->
         <div class="col-xs-6">
@@ -105,13 +95,21 @@
 
             <!-- list of existing friends, if any  -->
             <ul class="list-group" v-if="users">
-              <li class="list-group-item" v-for="user in users">{{ user.google.cachedUserProfile.name }}</li>
+              <li class="list-group-item" v-for="user in users">{{ user.alias }}</li>
+
+              <!-- add a friend -->
+              <li class="list-group-item form-group">
+                <input type='text' class='form-control' v-model='user.alias' v-on:keyup.enter="save('user')" placeholder='add a user'>
+              </li>
             </ul>
 
             <!-- no friends -->
             <div class="panel-body" v-else>
               <div class="alert alert-info">
                 <strong>aawwww</strong> ... ya got no friends?
+              </div>
+              <div class="form-group">
+                <input type='text' class='form-control' v-model='user.alias' v-on:keyup.enter="save('user')" placeholder='add a user'>
               </div>
             </div>
           </div>
@@ -123,32 +121,31 @@
             <div class="panel-heading">chat rooms</div>
 
             <!-- list of existing rooms, if any  -->
-            <ul class="list-group">
-              <li class="list-group-item" v-for="room in rooms">
-                {{ room.name }} <br />
-                <small><strong>by {{ room.addedBy }}<strong></small>
-              </li>
+            <ul class="list-group" v-if="rooms">
+              <li class="list-group-item" v-for="room in rooms">{{ room.name }}</li>
 
               <!-- add a room -->
               <li class="list-group-item form-group">
                 <input type='text' class='form-control' v-model='room.name' v-on:keyup.enter="save('room')" placeholder='start new chat'>
               </li>
             </ul>
+
+            <!-- no rooms -->
+            <div class="panel-body" v-else>
+              <div class="alert alert-info">
+                <strong>sshhh..</strong> so quiet in here ...
+              </div>
+              <div class="form-group">
+                <input type='text' class='form-control' v-model='room.name' v-on:keyup.enter="save('room')" placeholder='start new chat'>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="row" v-if='!session.user.uid'>
-        <div class="col-xs-12">
-          <h1>Sorry, you have to be logged in to waffle</h1>
-        </div>
-      </div>
-
+  <!-- </form> -->
 
   <!-- additional scripts -->
   <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
   <script src="js/vue.js"></script>
-  <script src="js/codeclub-session.js"></script>
   <script src="js/codeclub-home.js"></script>
 </body>
 
